@@ -16,7 +16,7 @@ func (q Question) AnswerContainsDigit(digit rune) bool {
 	return false
 }
 
-func (q Question) allDigitsGuessed(answer string) bool {
+func (q Question) AllDigitsGuessed(answer string) bool {
 	if strings.ContainsRune(answer, '_') {
 		return false
 	}
@@ -24,17 +24,18 @@ func (q Question) allDigitsGuessed(answer string) bool {
 }
 
 func (q Question) GetAnswerWithPlaceholder(answer string) string {
-	retAnswer := []rune(answer)
+	var retAnswer []rune
 
-	for i, char := range q.Answer {
-		if char == []rune(answer)[i] {
-			retAnswer[i] = char
-		} else {
-			retAnswer[i] = '_'
-		}
+	for i := 0; i < len(q.Answer); i++ {
+		retAnswer = append(retAnswer, '_')
 	}
-	if q.allDigitsGuessed(string(retAnswer)) {
-		return "Congratulations! You guessed all the numbers."
+
+	for _, char := range answer {
+		for j, ansChar := range q.Answer {
+			if char == ansChar {
+				retAnswer[j] = char
+			}
+		}
 	}
 	return string(retAnswer)
 }

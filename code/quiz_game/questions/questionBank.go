@@ -7,17 +7,18 @@ import (
 	"strings"
 )
 
-type questionBank struct {
-	questions     []Question
+type QuestionBank struct {
+	Questions     []Question
 	questionsFile string
 }
 
-func (q *questionBank) loadQuestions() {
+func (q *QuestionBank) loadQuestions() {
 	file, err := os.Open(q.questionsFile)
 	defer file.Close()
 
 	if err != nil {
-		panic(err)
+		fmt.Println("File Not Found!")
+		os.Exit(1)
 	}
 
 	scanner := bufio.NewScanner(file)
@@ -30,20 +31,20 @@ func (q *questionBank) loadQuestions() {
 
 	for _, line := range txtLines {
 		items := strings.SplitN(line, " ", 2)
-		q.questions = append(q.questions, Question{Text: items[1], Answer: items[0]})
+		q.Questions = append(q.Questions, Question{Text: items[1], Answer: items[0]})
 	}
 }
 
-func NewQuestionBank(qFile string) *questionBank {
-	q := new(questionBank)
+func NewQuestionBank(qFile string) *QuestionBank {
+	q := new(QuestionBank)
 	q.questionsFile = qFile
 	q.loadQuestions()
 
 	return q
 }
 
-func (q questionBank) PrintQuestions() {
-	for _, q := range q.questions {
+func (q QuestionBank) PrintQuestions() {
+	for _, q := range q.Questions {
 		fmt.Println(q.Text)
 	}
 }
