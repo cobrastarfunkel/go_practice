@@ -33,7 +33,12 @@ func gameLoop(curGame *game.Game) {
 
 func loadQuestions(filename string) {
 	qb := QuestionBank.NewQuestionBank(filename)
-	curGame := game.Game{Questions: qb, CurrentScore: 200, MaxQuestions: len(qb.Questions), AmountWagered: 0}
+	curGame := game.Game{
+		Questions:     qb,
+		CurrentScore:  200,
+		MaxQuestions:  len(qb.Questions),
+		AmountWagered: 0,
+	}
 	gameLoop(&curGame)
 }
 
