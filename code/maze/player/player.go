@@ -13,8 +13,9 @@ func (p *Player) AddItem(item string) {
 	p.items[item] = true
 }
 
-func (p *Player) UseItem(item string) {
+func (p *Player) UseItem(item string) string {
 	delete(p.items, item)
+	return item
 }
 
 func (p *Player) SetPosition(row int, col int) {
