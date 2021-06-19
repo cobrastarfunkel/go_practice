@@ -76,8 +76,6 @@ func (m *Maze) makeRooms(lines []string) {
 			getItems(spl_line[len(spl_line)-1], &m.Rooms[i][j])
 			setupPassages(&m.Rooms[i][j], spl_line[1:len(spl_line)-1])
 
-			fmt.Printf("Pass: %+v", m.Rooms[i][j].SouthPassage)
-
 			curLine++
 		}
 	}
