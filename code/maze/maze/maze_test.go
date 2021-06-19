@@ -14,8 +14,10 @@ func TestLoadMaze(t *testing.T) {
 	good_maze.LoadMaze()
 	if good_maze.cols != 3 || good_maze.rows != 2 {
 		t.Errorf("Load maze failed to get size Row: %d Col: %d", good_maze.rows, good_maze.cols)
-	} else {
-		t.Log("LoadMaze size test passed")
+	}
+
+	if good_maze.Rooms[0][0].Name != "The Start" {
+		t.Errorf("makeRooms() Failed, bad roomName %s", good_maze.Rooms[0][0].Name)
 	}
 
 	//bad_maze.LoadMaze()

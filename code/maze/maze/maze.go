@@ -3,6 +3,7 @@ package maze
 import (
 	"bufio"
 	"fmt"
+	"maze/passage"
 	"maze/room"
 	"os"
 	"strconv"
@@ -38,12 +39,51 @@ func (m *Maze) initRooms() {
 	}
 }
 
+func createPassage(id string) *passage.Passage {
+	tempPass := passage.Passage{}
+	switch id {
+	case "+":
+		tempPass.IsOpen = true
+		break
+	case "-":
+		tempPass.IsOpen = false
+		break
+	default:
+		tempPass.IsOpen = false
+		tempPass.Key = id
+	}
+	return &tempPass
+}
+
+func setupPassages(curRoom *room.Room, lines []string) {
+	curRoom.NorthPassage = createPassage(lines[0])
+	curRoom.EastPassage = createPassage(lines[1])
+	curRoom.SouthPassage = createPassage(lines[2])
+	curRoom.WestPassage = createPassage(lines[3])
+}
+
+func getItems(item string, curRoom *room.Room) {
+	for _, s := range strings.Fields(item) {
+		curRoom.AddItem(s)
+	}
+}
+
 func (m *Maze) makeRooms(lines []string) {
+	curLine := 0
 	for i := 0; i < m.rows; i++ {
 		for j := 0; j < m.cols; j++ {
+			spl_line := strings.Split(lines[curLine], ",")
+			m.Rooms[i][j] = room.Room{Name: spl_line[0]}
 
+			getItems(spl_line[len(spl_line)-1], &m.Rooms[i][j])
+			setupPassages(&m.Rooms[i][j], spl_line[1:len(spl_line)-1])
+
+			fmt.Printf("Pass: %+v", m.Rooms[i][j].SouthPassage)
+
+			curLine++
 		}
 	}
+	//fmt.Printf("Rooms %v", m.Rooms)
 }
 
 func (m *Maze) buildMaze(lines []string) {
