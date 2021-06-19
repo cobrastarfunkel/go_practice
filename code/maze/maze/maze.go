@@ -44,10 +44,8 @@ func createPassage(id string) *passage.Passage {
 	switch id {
 	case "+":
 		tempPass.IsOpen = true
-		break
 	case "-":
 		tempPass.IsOpen = false
-		break
 	default:
 		tempPass.IsOpen = false
 		tempPass.Key = id
@@ -83,7 +81,6 @@ func (m *Maze) makeRooms(lines []string) {
 			curLine++
 		}
 	}
-	//fmt.Printf("Rooms %v", m.Rooms)
 }
 
 func (m *Maze) buildMaze(lines []string) {
