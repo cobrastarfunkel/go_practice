@@ -32,12 +32,10 @@ func getPassageDescription(p *passage.Passage) string {
 	return retStr
 }
 
-func (g *Game) ExitFound() bool {
-	if g.getCurrentRoomName() == "The Exit" {
-		return true
-	}
-	return false
-}
+// func (g *Game) ExitFound() bool {
+// 	//check if isOpen is outside of bounds of the array
+
+// }
 
 func (g *Game) DisplayPassages() {
 	fmt.Printf("\n\nYou are now in the %s\n", g.getCurrentRoomName())
@@ -111,6 +109,8 @@ func (g *Game) MoveDirection(direction rune) {
 	fmt.Printf("You try to go %s\n", directions[direction])
 
 	if g.validDirection(direction) {
+		g.player.IncrementMoves()
+
 		curRow, curCol := g.player.GetPosition()
 		switch direction {
 		case 'N':

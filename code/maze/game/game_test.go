@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestAddItem(t *testing.T) {
+func TestGame(t *testing.T) {
 	test_file := "../maze/test_maze.txt"
 	good_maze := &maze.Maze{MazeFile: test_file}
 	good_maze.LoadMaze()
