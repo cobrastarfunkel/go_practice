@@ -64,6 +64,28 @@ func TestDraw(t *testing.T) {
 	if deck.NumCardsInDeck != length {
 		t.Errorf("NumCardsInDeck should = length (%d) but = %d", length, deck.NumCardsInDeck)
 	}
+	//deck.Printdeck()
 	deck.Shuffle()
+	deck.Printdeck()
+}
+
+func TestInsertAt(t *testing.T) {
+	length := 10
+	testVal := 999
+	deck := NewDeck(length)
+	card := Card{Value: testVal}
+	card2 := Card{Value: 333}
+	card3 := Card{Value: 444}
+	//deck.Printdeck()
+	deck.InsertAt(&card, length)
+
+	deck.Printdeck()
+
+	deck.InsertAt(&card2, 5)
+
+	deck.Printdeck()
+
+	deck.InsertAt(&card3, 0)
+
 	deck.Printdeck()
 }

@@ -16,6 +16,7 @@ func (d *deck) MakeFullDeck() {
 	for i := 1; i <= d.NUM_CARDS_IN_RACKO_DECK; i++ {
 		d.Push(i)
 	}
+	d.Shuffle()
 }
 
 func (d *deck) Push(val int) {
@@ -50,10 +51,10 @@ func (d *deck) Draw() *Card {
 		d.Top = retCard.Previous
 	}
 	retCard.Previous = nil
+	retCard.Next = nil
 	d.Top.Next = nil
 
 	d.NumCardsInDeck--
-
 	return retCard
 }
 
@@ -75,19 +76,22 @@ func (d *deck) Shuffle() {
 	for i := 0; i < origDeckSize; i++ {
 		list = append(list, d.Draw())
 	}
+
 	maxCount := len(list)
 	counter := len(list)
+
+	d.Top = nil
 
 	for i := 0; i < counter; i++ {
 		max := maxCount
 		rando := rand.Intn(max)
 
 		if d.Top == nil {
-			d.Top = list[rando]
+			d.Top = &Card{Value: list[rando].Value, Previous: nil, Next: nil}
 			d.NumCardsInDeck++
 		} else {
-			newTop := Card{Previous: d.Top, Value: list[rando].Value}
-			d.Top.Next = list[rando]
+			newTop := Card{Previous: d.Top, Value: list[rando].Value, Next: nil}
+			d.Top.Next = &newTop
 			d.Top = &newTop
 			d.NumCardsInDeck++
 		}
@@ -97,10 +101,48 @@ func (d *deck) Shuffle() {
 	}
 }
 
+func (d *deck) InsertAt(c *Card, index int) {
+	if index < 0 || index > d.NumCardsInDeck {
+		return
+	}
+
+	tempCard := d.Top
+	lastCard := false
+	i := 0
+
+	for i <= index {
+		if i == index {
+			fmt.Printf("Here: %v index\nLastCard: %t\n", tempCard, lastCard)
+			if lastCard {
+				tempCard.Previous = c
+				c.Next = tempCard
+			} else if tempCard.Next != nil {
+				c.Next = tempCard.Next
+				tempCard.Next.Previous = c
+				c.Previous = tempCard
+				tempCard.Next = c
+			} else {
+				c.Previous = tempCard
+				tempCard.Next = c
+				d.Top = c
+			}
+			d.NumCardsInDeck++
+		}
+		if tempCard.Previous != nil {
+			tempCard = tempCard.Previous
+		} else {
+			lastCard = true
+		}
+
+		i++
+	}
+}
+
 func (d *deck) Printdeck() {
 	list := d.Top
+	fmt.Printf("Num Cards %d\n", d.NumCardsInDeck)
 	for i := 1; i <= d.NumCardsInDeck; i++ {
-		fmt.Printf("Card %d\n", list.Value)
+		fmt.Printf("Card %v\n", list)
 		list = list.Previous
 	}
 }
