@@ -112,7 +112,6 @@ func (d *deck) InsertAt(c *Card, index int) {
 
 	for i <= index {
 		if i == index {
-			fmt.Printf("Here: %v index\nLastCard: %t\n", tempCard, lastCard)
 			if lastCard {
 				tempCard.Previous = c
 				c.Next = tempCard

@@ -12,7 +12,6 @@ func TestBuildDeck(t *testing.T) {
 
 	curTop := deck.Top
 	for i := 1; i <= length; i++ {
-		fmt.Printf("Curtop %d\n", curTop.Value)
 		list = append(list, curTop.Value)
 		curTop = curTop.Previous
 	}
@@ -43,8 +42,6 @@ func TestDiscard(t *testing.T) {
 	if discard.Top.Previous == nil {
 		t.Error("Discard Previous Card should not == nil")
 	}
-
-	//discard.Printdeck()
 }
 
 func TestDraw(t *testing.T) {
@@ -64,28 +61,38 @@ func TestDraw(t *testing.T) {
 	if deck.NumCardsInDeck != length {
 		t.Errorf("NumCardsInDeck should = length (%d) but = %d", length, deck.NumCardsInDeck)
 	}
-	//deck.Printdeck()
 	deck.Shuffle()
 	deck.Printdeck()
 }
 
 func TestInsertAt(t *testing.T) {
 	length := 10
-	testVal := 999
+
+	var tests = []struct {
+		testVal, index int
+		card           Card
+	}{
+		{999, length, Card{Value: 999}},
+		{222, 4, Card{Value: 222}},
+		{333, 0, Card{Value: 333}},
+	}
 	deck := NewDeck(length)
-	card := Card{Value: testVal}
-	card2 := Card{Value: 333}
-	card3 := Card{Value: 444}
-	//deck.Printdeck()
-	deck.InsertAt(&card, length)
 
-	deck.Printdeck()
+	loopCards := func(index int, val int) {
+		tempCard := deck.Top
+		for i := 0; i <= index; i++ {
+			if i == index && tempCard.Value != val {
+				t.Errorf("InserAt %d wrong\nShould be %d\nIs: %d", index, val, tempCard.Value)
+			}
+			tempCard = tempCard.Previous
+		}
+	}
 
-	deck.InsertAt(&card2, 5)
-
-	deck.Printdeck()
-
-	deck.InsertAt(&card3, 0)
-
-	deck.Printdeck()
+	for _, test := range tests {
+		testName := fmt.Sprintf("Val: %d, Index: %d", test.testVal, test.index)
+		t.Run(testName, func(t *testing.T) {
+			deck.InsertAt(&test.card, test.index)
+			loopCards(test.index, test.testVal)
+		})
+	}
 }
