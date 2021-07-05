@@ -18,11 +18,15 @@ func TestHand(t *testing.T) {
 	hand := Hand{Size: 3}
 
 	for _, test := range tests {
-		hand.AddToHand(test.c)
-		if hand.lowestCard.Value != test.testVal {
-			t.Errorf("LowestCard val bad %d\nVal: %d", hand.lowestCard.Value, test.testVal)
-		}
+		testname := fmt.Sprintf("AddToHand() Val: %d", test.testVal)
+		t.Run(testname, func(t *testing.T) {
+			hand.AddToHand(test.c)
+			if hand.lowestCard.Value != test.testVal {
+				t.Errorf("LowestCard val bad %d\nVal: %d", hand.lowestCard.Value, test.testVal)
+			}
+		})
 	}
+	hand.ShowHand()
 
 	var swapTests = []struct {
 		position int

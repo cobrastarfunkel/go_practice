@@ -10,6 +10,7 @@ type Hand struct {
 	Size       int
 }
 
+// Adds a card to the Hand
 func (h *Hand) AddToHand(card *card.Card) {
 	tempCard := h.lowestCard
 	if h.lowestCard == nil {
@@ -21,35 +22,48 @@ func (h *Hand) AddToHand(card *card.Card) {
 	}
 }
 
-func (h *Hand) SwapOutCard(c *card.Card, pos int) *card.Card {
-	var retCard *card.Card
-	tempCard := h.lowestCard
+// Loops through the Hand woring it's way back though
+// the Linked List until it reaches the card at the
+// correct index and returns it
+func GetCardAtIndex(index int, c *card.Card) *card.Card {
+	curCard := c
 	i := 0
 
-	for i <= pos {
-		if i == pos {
-			retCard = tempCard
-			switch {
-			case tempCard.Next == nil:
-				tempCard.Previous.Next = c
-				c.Next, c.Previous = nil, tempCard.Previous
-				h.lowestCard = c
-
-			case tempCard.Previous == nil:
-				tempCard.Next.Previous = c
-				c.Next, c.Previous = tempCard.Next, nil
-
-			default:
-				tempCard.Next.Previous = c
-				tempCard.Previous.Next = c
-				c.Next, c.Previous = tempCard.Next, tempCard.Previous
-			}
-			retCard.Next, retCard.Previous = nil, nil
-		} else {
-			tempCard = tempCard.Previous
+	for i <= index {
+		if i == index {
+			return curCard
 		}
+		curCard = curCard.Previous
 		i++
 	}
+
+	return nil
+}
+
+// Calls GetCardAtIndex to retrieve the Card from the Hand
+// Then swaps out the new card for the old in the LLinked List
+func (h *Hand) SwapOutCard(c *card.Card, pos int) *card.Card {
+	retCard := GetCardAtIndex(pos, h.lowestCard)
+
+	switch {
+	// Is top card
+	case retCard.Next == nil:
+		retCard.Previous.Next = c
+		c.Next, c.Previous = nil, retCard.Previous
+		h.lowestCard = c
+
+	// Is bottom card
+	case retCard.Previous == nil:
+		retCard.Next.Previous = c
+		c.Next, c.Previous = retCard.Next, nil
+
+	default:
+		retCard.Next.Previous = c
+		retCard.Previous.Next = c
+		c.Next, c.Previous = retCard.Next, retCard.Previous
+	}
+	retCard.Next, retCard.Previous = nil, nil
+
 	return retCard
 }
 
