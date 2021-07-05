@@ -44,4 +44,35 @@ func TestHand(t *testing.T) {
 		})
 	}
 	hand.ShowHand()
+
+	t.Run("Should not have Racko after position swaps", func(t *testing.T) {
+		if hand.HasRacko() {
+			t.Errorf("Should not Have Racko")
+		}
+	})
+
+	hand.SwapOutCard(&card.Card{Value: 1}, 0)
+	hand.SwapOutCard(&card.Card{Value: 2}, 1)
+	hand.SwapOutCard(&card.Card{Value: 3}, 2)
+
+	t.Run("Should have Racko", func(t *testing.T) {
+		if !hand.HasRacko() {
+			t.Errorf("Should Have Racko")
+		}
+	})
+
+	hand.SwapOutCard(&card.Card{Value: 4}, 0)
+	t.Run("Should not have Racko 0 index highest", func(t *testing.T) {
+		if hand.HasRacko() {
+			t.Errorf("Should not Have Racko")
+		}
+	})
+
+	hand.SwapOutCard(&card.Card{Value: 3}, 2)
+	hand.SwapOutCard(&card.Card{Value: 4}, 1)
+	t.Run("Should not have Racko middle index highest", func(t *testing.T) {
+		if hand.HasRacko() {
+			t.Errorf("Should not Have Racko")
+		}
+	})
 }

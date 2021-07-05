@@ -67,6 +67,19 @@ func (h *Hand) SwapOutCard(c *card.Card, pos int) *card.Card {
 	return retCard
 }
 
+func (h *Hand) HasRacko() bool {
+	curCard := h.lowestCard
+	for i := 0; i < h.Size; i++ {
+		if curCard.Previous == nil {
+			return true
+		} else if curCard.Value > curCard.Previous.Value {
+			return false
+		}
+		curCard = curCard.Previous
+	}
+	return true
+}
+
 func (h *Hand) ShowHand() {
 	tempCard := h.lowestCard
 	for i := 0; i < h.Size; i++ {
