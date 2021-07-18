@@ -2,7 +2,8 @@ package player
 
 import (
 	"fmt"
-	card "racko/cards"
+	card "racko/card"
+	"strings"
 )
 
 type Hand struct {
@@ -13,6 +14,7 @@ type Hand struct {
 // Adds a card to the Hand
 func (h *Hand) AddToHand(card *card.Card) {
 	tempCard := h.lowestCard
+
 	if h.lowestCard == nil {
 		h.lowestCard = card
 	} else {
@@ -80,10 +82,13 @@ func (h *Hand) HasRacko() bool {
 	return true
 }
 
-func (h *Hand) ShowHand() {
+func (h *Hand) ShowHand() string {
 	tempCard := h.lowestCard
+	var retString string
+
 	for i := 0; i < h.Size; i++ {
-		fmt.Printf("Pos: %d\nVal: %d\n\n", i, tempCard.Value)
+		retString = retString + fmt.Sprintf("%d:%s%d\n", i+1, strings.Repeat(" ", tempCard.Value), tempCard.Value)
 		tempCard = tempCard.Previous
 	}
+	return retString
 }

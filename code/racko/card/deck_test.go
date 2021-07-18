@@ -62,7 +62,7 @@ func TestDraw(t *testing.T) {
 		t.Errorf("NumCardsInDeck should = length (%d) but = %d", length, deck.NumCardsInDeck)
 	}
 	deck.Shuffle()
-	deck.Printdeck()
+	deck.PrintDeck()
 }
 
 func TestInsertAt(t *testing.T) {

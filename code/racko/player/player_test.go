@@ -2,7 +2,7 @@ package player
 
 import (
 	"fmt"
-	card "racko/cards"
+	card "racko/card"
 	"testing"
 )
 
@@ -11,9 +11,9 @@ func TestHand(t *testing.T) {
 		testVal int
 		c       *card.Card
 	}{
-		{111, &card.Card{Value: 111}},
-		{222, &card.Card{Value: 222}},
-		{333, &card.Card{Value: 333}},
+		{11, &card.Card{Value: 11}},
+		{22, &card.Card{Value: 22}},
+		{33, &card.Card{Value: 33}},
 	}
 	hand := Hand{Size: 3}
 
@@ -32,9 +32,9 @@ func TestHand(t *testing.T) {
 		position int
 		c        *card.Card
 	}{
-		{1, &card.Card{Value: 123}},
-		{2, &card.Card{Value: 456}},
-		{0, &card.Card{Value: 789}},
+		{1, &card.Card{Value: 12}},
+		{2, &card.Card{Value: 45}},
+		{0, &card.Card{Value: 39}},
 	}
 
 	for _, test := range swapTests {
@@ -43,7 +43,6 @@ func TestHand(t *testing.T) {
 			hand.SwapOutCard(test.c, test.position)
 		})
 	}
-	hand.ShowHand()
 
 	t.Run("Should not have Racko after position swaps", func(t *testing.T) {
 		if hand.HasRacko() {
@@ -69,10 +68,17 @@ func TestHand(t *testing.T) {
 	})
 
 	hand.SwapOutCard(&card.Card{Value: 3}, 2)
-	hand.SwapOutCard(&card.Card{Value: 4}, 1)
+	hand.SwapOutCard(&card.Card{Value: 5}, 1)
 	t.Run("Should not have Racko middle index highest", func(t *testing.T) {
 		if hand.HasRacko() {
 			t.Errorf("Should not Have Racko")
 		}
 	})
+	fmt.Println(hand.ShowHand())
+}
+
+func TestComputerPlayer(t *testing.T) {
+	for i := 0; i < 60; i++ {
+
+	}
 }

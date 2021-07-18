@@ -6,20 +6,20 @@ import (
 	"time"
 )
 
-type deck struct {
+type Deck struct {
 	Top                     *Card
 	NUM_CARDS_IN_RACKO_DECK int
 	NumCardsInDeck          int
 }
 
-func (d *deck) MakeFullDeck() {
+func (d *Deck) MakeFullDeck() {
 	for i := 1; i <= d.NUM_CARDS_IN_RACKO_DECK; i++ {
 		d.Push(i)
 	}
 	d.Shuffle()
 }
 
-func (d *deck) Push(val int) {
+func (d *Deck) Push(val int) {
 	if d.Top == nil {
 		d.Top = &Card{Next: nil, Previous: nil, Value: val}
 	} else {
@@ -34,7 +34,7 @@ func (d *deck) Push(val int) {
 	d.NumCardsInDeck++
 }
 
-func (d *deck) Discard(c *Card) {
+func (d *Deck) Discard(c *Card) {
 	if d.Top == nil {
 		d.Top = c
 	} else {
@@ -45,11 +45,16 @@ func (d *deck) Discard(c *Card) {
 	d.NumCardsInDeck++
 }
 
-func (d *deck) Draw() *Card {
+func (d *Deck) Draw() *Card {
 	retCard := d.Top
-	if d.Top.Previous != nil {
+
+	if d.NumCardsInDeck < 1 {
+		d.Top = &Card{nil, nil, -1}
+		return d.Top
+	} else if d.Top.Previous != nil {
 		d.Top = retCard.Previous
 	}
+
 	retCard.Previous = nil
 	retCard.Next = nil
 	d.Top.Next = nil
@@ -58,7 +63,7 @@ func (d *deck) Draw() *Card {
 	return retCard
 }
 
-func (d *deck) Peek() int {
+func (d *Deck) Peek() int {
 	return d.Top.Value
 }
 
@@ -68,7 +73,7 @@ func removeElement(list []*Card, i int) []*Card {
 	return list[:len(list)-1]
 }
 
-func (d *deck) Shuffle() {
+func (d *Deck) Shuffle() {
 	rand.Seed(time.Now().UnixNano())
 	var list []*Card
 	origDeckSize := d.NumCardsInDeck
@@ -101,7 +106,7 @@ func (d *deck) Shuffle() {
 	}
 }
 
-func (d *deck) InsertAt(c *Card, index int) {
+func (d *Deck) InsertAt(c *Card, index int) {
 	if index < 0 || index > d.NumCardsInDeck {
 		return
 	}
@@ -137,19 +142,19 @@ func (d *deck) InsertAt(c *Card, index int) {
 	}
 }
 
-func (d *deck) Printdeck() {
+func (d *Deck) PrintDeck() {
 	list := d.Top
-	fmt.Printf("Num Cards %d\n", d.NumCardsInDeck)
+	fmt.Printf("Printing Deck\nNum Cards %d\n", d.NumCardsInDeck)
 	for i := 1; i <= d.NumCardsInDeck; i++ {
 		fmt.Printf("Card %v\n", list)
 		list = list.Previous
 	}
 }
 
-func NewDeck(length int) *deck {
-	deck := deck{
+func NewDeck(length int) *Deck {
+	Deck := Deck{
 		NUM_CARDS_IN_RACKO_DECK: length,
 	}
-	deck.MakeFullDeck()
-	return &deck
+	Deck.MakeFullDeck()
+	return &Deck
 }
