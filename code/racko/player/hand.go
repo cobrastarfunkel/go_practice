@@ -88,7 +88,9 @@ func (h *Hand) ShowHand() string {
 
 	for i := 0; i < h.Size; i++ {
 		retString = retString + fmt.Sprintf("%d:%s%d\n", i+1, strings.Repeat(" ", tempCard.Value), tempCard.Value)
+
 		tempCard = tempCard.Previous
+		fmt.Printf("Current Card %v\nPrev: %v\n\n", tempCard, tempCard)
 	}
 	return retString
 }

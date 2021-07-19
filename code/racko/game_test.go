@@ -1,13 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"racko/card"
 	"racko/player"
 	"testing"
 )
 
-func BuildTestObj() *Game {
-	deckLength := 10
+func BuildTestObj(deckLength int) *Game {
 	handSize := 3
 	hands := []*player.Hand{
 		{Size: handSize},
@@ -16,7 +16,7 @@ func BuildTestObj() *Game {
 
 	for j, hand := range hands {
 		for i := 1; i <= handSize; i++ {
-			hand.AddToHand(&card.Card{Value: i + j})
+			hand.AddToHand(&card.Card{Value: (i + j) * 2})
 		}
 	}
 
@@ -34,17 +34,30 @@ func BuildTestObj() *Game {
 }
 
 func TestDrawFromDeck(t *testing.T) {
-	game := BuildTestObj()
-	topCardVal := game.ShowTopOfDiscardPile()
-	tempCard := game.DrawFromDeck().Value
+	deckLength := 5
+	game := BuildTestObj(deckLength)
+	game.Deck.PrintDeck()
 
-	if topCardVal != tempCard {
-		t.Errorf("Top card and Draw card do not match\nTop: %d\nDraw: %d", topCardVal, tempCard)
+	topCardVal := game.ShowTopOfDiscardPile()
+	tempCard := game.DrawFromDeck()
+	game.Discard.Discard(tempCard)
+
+	if topCardVal != tempCard.Value {
+		t.Errorf("Top card and Draw card do not match\nTop: %d\nDraw: %d", topCardVal, tempCard.Value)
 	}
 
 	nextDraw := game.ShowTopOfDiscardPile()
 
-	if nextDraw == tempCard {
-		t.Errorf("Top card and Draw card match after 2nd Draw\nTop: %d\nDraw: %d", nextDraw, tempCard)
+	if nextDraw == tempCard.Value {
+		t.Errorf("Top card and Draw card match after 2nd Draw\nTop: %d\nDraw: %d", nextDraw, tempCard.Value)
+	}
+
+	for i := 0; i < deckLength*2; i++ {
+		fmt.Println("\n>>> Deck")
+		game.Deck.PrintDeck()
+		fmt.Println("### Discard")
+		game.Discard.PrintDeck()
+		fmt.Println()
+		game.DiscardCard(game.Players[1].SwapOutCard(game.DrawFromDeck(), 1))
 	}
 }

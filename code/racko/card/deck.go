@@ -48,8 +48,9 @@ func (d *Deck) Discard(c *Card) {
 func (d *Deck) Draw() *Card {
 	retCard := d.Top
 
-	if d.NumCardsInDeck < 1 {
+	if d.NumCardsInDeck < 1 || d.Top.Value == -1 {
 		d.Top = &Card{nil, nil, -1}
+		d.NumCardsInDeck = 0
 		return d.Top
 	} else if d.Top.Previous != nil {
 		d.Top = retCard.Previous
