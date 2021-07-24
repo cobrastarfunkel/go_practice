@@ -29,7 +29,7 @@ func (h *Hand) AddToHand(card *card.Card) {
 // correct index and returns it
 func GetCardAtIndex(index int, c *card.Card) *card.Card {
 	curCard := c
-	i := 0
+	i := 1
 
 	for i <= index {
 		if i == index {
@@ -89,8 +89,12 @@ func (h *Hand) ShowHand() string {
 	for i := 0; i < h.Size; i++ {
 		retString = retString + fmt.Sprintf("%d:%s%d\n", i+1, strings.Repeat(" ", tempCard.Value), tempCard.Value)
 
-		tempCard = tempCard.Previous
-		fmt.Printf("Current Card %v\nPrev: %v\n\n", tempCard, tempCard)
+		if tempCard.Previous != nil {
+			tempCard = tempCard.Previous
+			//fmt.Printf("Current Card %v\nPrev: %v\n\n", tempCard, tempCard)
+		} else {
+			fmt.Printf("No More Cards: Index -> %d\n", i)
+		}
 	}
 	return retString
 }

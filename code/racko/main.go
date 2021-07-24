@@ -76,14 +76,14 @@ func start(g *Game) {
 	}
 	g.Discard.Discard(g.DrawFromDeck())
 
-	for {
+	for !g.IsGameOver() {
+		// Player hand isn't keeping 10 cards after p and index selection
+		g.DoNextTurn()
 		if g.IsGameOver() {
 			break
 		}
-		// Player hand isn't keeping 10 cards after p and index selection
-		g.DoNextTurn()
 	}
-	fmt.Printf("Congratulations %s, you won!", g.GetPlayer().PlayerName)
+	fmt.Printf("Congratulations %s, you won!\n", g.GetPlayer().PlayerName)
 }
 
 func createGame() {

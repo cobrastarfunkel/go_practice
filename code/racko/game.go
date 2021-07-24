@@ -43,7 +43,7 @@ func PlayerIndexOption(val int) int {
 	}
 
 	if intInput < 11 {
-		return intInput - 1
+		return intInput
 	} else {
 		fmt.Println("Invalid Input")
 		PlayerIndexOption(val)
@@ -53,7 +53,7 @@ func PlayerIndexOption(val int) int {
 
 func (g *Game) DoNextTurn() {
 	g.PrintPrompt()
-	curPlayer := g.Players[g.CurrentPlayerTurn]
+	curPlayer := &g.Players[g.CurrentPlayerTurn]
 	if curPlayer.IsComputer {
 
 	} else {
@@ -85,6 +85,7 @@ func (g *Game) DoNextTurn() {
 	} else {
 		g.CurrentPlayerTurn++
 	}
+	fmt.Printf(">>> G Current Player %d\n", g.CurrentPlayerTurn)
 }
 
 func (g *Game) IsGameOver() bool {
